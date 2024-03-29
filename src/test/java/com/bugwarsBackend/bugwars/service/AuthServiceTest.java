@@ -224,5 +224,4 @@ public class AuthServiceTest {
         verify(userRepository, times(1)).findByUsername("nonExistingUser");
         verify(refreshTokenService, never()).deleteByUserId(anyLong());
     }
-    //comment line
 }
