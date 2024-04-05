@@ -95,27 +95,31 @@ public class ScriptService {
         //Not done
         User user = getUser(principal);
         Optional<Script> scriptOptional = scriptRepository.findById(id);
+        BugParser parser = new BugParser();
         Script updatedScript;
 
         if(scriptOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Script does not exist");
-        } else if (!user.getId().equals(scriptOptional.get().getId())) {
+        } else if (!scriptOptional.get().getUser().getId().equals(user.getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You must be the owner of this script to access it");
         } else {
             updatedScript = scriptOptional.get();
         }
 
-        //TODO implement logic to set isBytecodeValid to true once input has been parsed
-        // Need to call BugParser here
+        List<Integer> byteCode = null;
 
+        try {
+            byteCode = parser.parse(request.getRaw());
+            updatedScript.setBytecodeValid(true);
 
-
-        //map script fields here
+        } catch (BugParserException e) {
+            updatedScript.setBytecodeValid(false);
+            updatedScript.setBytecode(new int[]{});
+        }
         updatedScript.setName(request.getName());
         updatedScript.setRaw(request.getRaw());
-
-        //TODO find way to set byte code
-        //script.setBytecode(request.get());
+        updatedScript.setUser(user);
+        updatedScript.setBytecode(formatBytecode(byteCode));
 
         return scriptRepository.save(updatedScript);
     }
