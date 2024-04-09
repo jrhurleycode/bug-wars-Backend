@@ -16,16 +16,17 @@ import java.util.*;
 public class Battleground {
     private List<Bug> bugs;
     private String name;
-    private int swarm;
+    private Swarm swarm0;
+    private Swarm swarm1;
     private Entity[][] grid;
     private final Map<Integer, Action> actions = new HashMap<>();
     private final Map<Integer, Command> commands = new HashMap<>();
     private List<Bug> turnOrder;
 
-    private final List<Integer> actionsToBeTaken = new ArrayList<>();
-    //List of Action Codes - 0, 31, 0, 29
-    //Create a static map that maps the code to the action
-        //New Hashmap({Map<Integer, Action>)
+//    private final List<Integer> actionsToBeTaken = new ArrayList<>();
+//    //List of Action Codes - 0, 31, 0, 29
+//    //Create a static map that maps the code to the action
+//        //New Hashmap({Map<Integer, Action>)
     private int index;
 
     public Battleground(String name, Entity[][] grid, List<Bug> bugs) {
@@ -37,6 +38,8 @@ public class Battleground {
             this.bugs = new ArrayList<>();
         }
 
+        this.swarm0 = new Swarm("0");
+        this.swarm1 = new Swarm("1");
         init();
         loadCommands();
 
@@ -101,7 +104,7 @@ public class Battleground {
         int[] bytecode = Arrays.copyOf(script.getBytecode(), script.getBytecode().length);
 
         // Calculate turn order
-        TurnOrderCalculator turnOrderCalculator = new TurnOrderCalculator(grid, null);
+        TurnOrderCalculator turnOrderCalculator = new TurnOrderCalculator(grid, new Swarm("0"), new Swarm("1"));
         List<Bug> turnOrder = turnOrderCalculator.calculateTurnOrder();
 
         // Execute actions in the turn order
@@ -266,11 +269,10 @@ public class Battleground {
 
         // Create a new instance of Bug with the same properties as the original bug
         Bug newSpawn = new Bug(
-                bugFrontCoords,
                 bug.getSwarm(),
-                bug.getUserBytecode(),
-                bug.getDirection(), // Assuming the direction remains the same
-                bug.getBugType()
+                bugFrontCoords,
+                bug.getDirection(),
+                bug.getUserBytecode()
         );
 
         // Update the grid and add the new Bug instance to the list of bugs
@@ -321,7 +323,7 @@ public class Battleground {
     public boolean ifEnemy(Entity frontEntity) {
         if (frontEntity instanceof Bug) {
             Bug enemyBug = (Bug) frontEntity;
-            return enemyBug.getSwarm() != swarm;
+            return enemyBug.getSwarm() != this.swarm;
         }
         return false;
     }
@@ -349,7 +351,7 @@ public class Battleground {
     public boolean _goto(Entity frontEntity) {
         // Implement the logic for determining whether the bug should move to the specified location
         // This method should return true if the bug should move, false otherwise
-        // You need to determine the conditions under which the bug should move based on your game's requirements
+        // determine the conditions the bug moves depending on our game logic
         if (frontEntity instanceof Food) {
             // Move to the location if it contains food
             return true;

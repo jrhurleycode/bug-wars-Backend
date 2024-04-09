@@ -1,6 +1,6 @@
 package com.bugwarsBackend.bugwars.game.setup;
 
-import com.bugwarsBackend.bugwars.game.Swarm;
+import com.bugwarsBackend.bugwars.game.entity.Swarm;
 import com.bugwarsBackend.bugwars.game.entity.Bug;
 import com.bugwarsBackend.bugwars.game.entity.Entity;
 
@@ -10,12 +10,15 @@ import java.util.List;
 
 public class TurnOrderCalculator {
     private final Entity[][] grid;
-    private final List<Swarm> swarms;
+    private final Swarm swarm0;
+    private final Swarm swarm1;
+
     private Point coords;
 
-    public TurnOrderCalculator(Entity[][] grid, List<Swarm> swarms) {
+    public TurnOrderCalculator(Entity[][] grid, Swarm swarm0, Swarm swarm1) {
         this.grid = grid;
-        this.swarms = swarms;
+        this.swarm0 = swarm0;
+        this.swarm1 = swarm1;
     }
 
     public List<Bug> calculateTurnOrder() {
@@ -69,10 +72,10 @@ public class TurnOrderCalculator {
         return roughOrder;
     }
 
-    private List<Bug> sortTurnOrder(List<Bug> roughOrder) {
-        roughOrder.sort(Comparator.comparingInt(Bug::getSwarm));
-        return roughOrder;
-    }
+//    private List<Bug> sortTurnOrder(List<Bug> roughOrder) {
+//        roughOrder.sort(Comparator.comparingInt(Bug::getSwarm));
+//        return roughOrder;
+//    }
 
     private double calculateDistance(Point coords) {
         double centerX = (grid[0].length - 1) / 2.0;

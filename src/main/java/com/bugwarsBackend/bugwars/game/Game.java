@@ -1,6 +1,7 @@
 package com.bugwarsBackend.bugwars.game;
 
 import com.bugwarsBackend.bugwars.dto.response.GameReplay;
+import com.bugwarsBackend.bugwars.game.entity.Swarm;
 import lombok.Data;
 
 import java.util.List;

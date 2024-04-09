@@ -1,6 +1,5 @@
 package com.bugwarsBackend.bugwars.game.entity;
 
-import com.bugwarsBackend.bugwars.model.Script;
 import com.bugwarsBackend.bugwars.service.ScriptService;
 import lombok.Data;
 import lombok.Getter;
@@ -14,53 +13,45 @@ import java.util.Map;
 public class Bug implements Entity {
     @Getter
     private final Map<Integer, Command> commands = new HashMap<>();
-    private int swarm;
+    private final Swarm swarm;
     private Point coords;
     @Getter
     private Direction direction;
     private int[] userBytecode;
     private int index = 0;
-    private int bugType;
-
     //test
     private boolean moved = false;
     @Autowired
     ScriptService scriptService;
 
-    public Bug(Point coords, int swarm, int[] userBytecode, Direction direction, int bugType) {
-        this.coords = coords;
+    public Bug(Swarm swarm, Point coords, Direction direction,int[] userBytecode) {
         this.swarm = swarm;
-        this.userBytecode = userBytecode;
+        this.coords = coords;
         this.direction = direction;
-        this.bugType = bugType;
-
-        //loadCommands();
+        this.userBytecode = userBytecode;
     }
 
-    public Bug(int swarm, Point coords) {
+    public Bug(Swarm swarm, Point coords) {
         this.swarm = swarm;
         this.coords = coords;
     }
-
-    public Bug(Direction direction) {
+    public Bug(Swarm swarm, Direction direction) {
+        this.swarm = swarm;
         this.direction = direction;
     }
 
-    public Bug(int[] userBytecode) {
-        this.userBytecode = userBytecode;
-    }
-    public Bug(int swarm) {
-        this.swarm = swarm;
-    }
-
+//    public Bug(int[] userBytecode) {
+//        this.userBytecode = userBytecode;
+//    }
 
     public Bug(Point coords) {
         this.coords = coords;
+        this.swarm = null; // Or initialize with a default Swarm instance
     }
 
 
-    public Bug(int bugType, int[] userBytecode) {
-        this.bugType = bugType;
+    public Bug(Swarm swarm, int[] userBytecode) {
+        this.swarm = swarm;
         this.coords = new Point();
         this.direction = Direction.NORTH;
         this.userBytecode = userBytecode;
@@ -77,31 +68,31 @@ public class Bug implements Entity {
 
 
 
-    public int determineAction(Entity frontEntity, Script script) {
-        int result = -1;
-        //System.out.println("Script: " + script);
-        userBytecode  = script.getBytecode(); //changed int[] to userBytecode that was instantiated at the top
-
-        //loadCommands(); //loaded commands into commands
-
-        for (int i = 0; i < userBytecode.length; i++) {
-            if (commands.containsKey(userBytecode[i])) { //loading commands allows us to compare the userBytecode to the commands
-                //System.out.println("userBytecode: " + userBytecode[i]);
-                Command command = commands.get(userBytecode[i]);
-                boolean success = command.execute(frontEntity); // still returning false
-                System.out.println("Success: " + success);
-                if (success) {
-                    index = userBytecode[i + 1];
-                } else {
-                    incrementIndex(2);
-                }
-            } else {
-                result = userBytecode[i];
-                incrementIndex(1); // Moved incrementIndex back here
-            }
-        }
-        return result;
-    }
+//    public int determineAction(Entity frontEntity, Script script) {
+//        int result = -1;
+//        //System.out.println("Script: " + script);
+//        userBytecode  = script.getBytecode(); //changed int[] to userBytecode that was instantiated at the top
+//
+//        //loadCommands(); //loaded commands into commands
+//
+//        for (int i = 0; i < userBytecode.length; i++) {
+//            if (commands.containsKey(userBytecode[i])) { //loading commands allows us to compare the userBytecode to the commands
+//                //System.out.println("userBytecode: " + userBytecode[i]);
+//                Command command = commands.get(userBytecode[i]);
+//                boolean success = command.execute(frontEntity); // still returning false
+//                System.out.println("Success: " + success);
+//                if (success) {
+//                    index = userBytecode[i + 1];
+//                } else {
+//                    incrementIndex(2);
+//                }
+//            } else {
+//                result = userBytecode[i];
+//                incrementIndex(1); // Moved incrementIndex back here
+//            }
+//        }
+//        return result;
+//    }
 
 //    public int determineAction(Entity frontEntity, Script script) {
 //        int result = -1;
@@ -217,10 +208,10 @@ public class Bug implements Entity {
         String color;
         String bugTypeString = "";
 
-        if (swarm == 0) {
+        if (swarm.getName().equals("Swarm 0")) {
             color = "\033[0;34m"; // blue
             bugTypeString = "^";
-        } else if (swarm == 1) {
+        } else if (swarm.getName().equals("Swarm 1")) {
             color = "\033[0;31m"; // red
             bugTypeString = "v";
         } else {
@@ -230,9 +221,9 @@ public class Bug implements Entity {
         return String.format("%s%s\033[0m", color, bugTypeString);
     }
 
-    public String bugTeam() {
-        return String.valueOf(bugType); // Return the bugType as a string
-    }
+//    public String bugTeam() {
+//        return String.valueOf(bugType); // Return the bugType as a string
+//    }
 
     // FunctionalInterface used to enforce single abstract method
     @FunctionalInterface
