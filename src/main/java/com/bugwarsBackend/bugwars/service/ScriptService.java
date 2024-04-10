@@ -132,9 +132,10 @@ public class ScriptService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Script does not exist");
         }
 
-        if (!user.getId().equals(scriptOptional.get().getId())) {
+        if (!user.getId().equals(scriptOptional.get().getUser().getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unable to delete this script. You must be the owner of this script to delete it");
         }
+
 
         scriptRepository.deleteById(id);
     }

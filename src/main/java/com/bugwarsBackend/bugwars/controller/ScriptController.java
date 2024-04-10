@@ -53,7 +53,7 @@ public class ScriptController {
         return scriptService.updateScript(id, request, principal);
     }
 
-    @DeleteMapping(path = "{id}")
+    @DeleteMapping(path = "/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteScriptById(@PathVariable Long id, Principal principal) {
         scriptService.deleteScriptById(id, principal);
