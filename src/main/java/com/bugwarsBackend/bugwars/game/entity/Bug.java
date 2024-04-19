@@ -126,20 +126,20 @@ public class Bug implements Entity {
 //    }
 
 
-    private void incrementIndex(int increment) {
-        //index = (index + increment) % userBytecode.length;
-
-        if (userBytecode != null && userBytecode.length > 0) {
-            index = (index + increment) % userBytecode.length;
-        } else {
-            throw new IllegalArgumentException("userBytecode is null or empty");
-        }
-
-        if (index >= userBytecode.length) {
-            throw new IllegalArgumentException("index is out of bounds");
-
-        }
-    }
+//    private void incrementIndex(int increment) {
+//        //index = (index + increment) % userBytecode.length;
+//
+//        if (userBytecode != null && userBytecode.length > 0) {
+//            index = (index + increment) % userBytecode.length;
+//        } else {
+//            throw new IllegalArgumentException("userBytecode is null or empty");
+//        }
+//
+//        if (index >= userBytecode.length) {
+//            throw new IllegalArgumentException("index is out of bounds");
+//
+//        }
+//    }
 
     public boolean ifEnemy(Entity frontEntity) {
         if (frontEntity instanceof Bug) {
@@ -169,10 +169,6 @@ public class Bug implements Entity {
         return frontEntity instanceof Wall;
     }
 
-//    private boolean _goto(Entity frontEntity) {
-//        return true;
-//    }
-
     public boolean _goto(Entity frontEntity) {
         // Implement the logic for determining whether the bug should move to the specified location
         // This method should return true if the bug should move, false otherwise
@@ -200,7 +196,6 @@ public class Bug implements Entity {
 
     @Override
     public void setPosition(Point position) {
-
     }
 
     @Override
@@ -215,7 +210,7 @@ public class Bug implements Entity {
             color = "\033[0;31m"; // red
             bugTypeString = "v";
         } else {
-            throw new IllegalStateException("Unexpected value: " + swarm);
+            throw new IllegalStateException("Unexpected value: " + swarm.toString());
         }
 
         return String.format("%s%s\033[0m", color, bugTypeString);

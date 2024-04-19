@@ -192,12 +192,7 @@ public class Battleground {
         actions.put(14, bug -> eat(bug));
     }
 
-
-
-//List of actions would be new ArrayList(0, 10, 11, 12, 13, 14)
-    //for each action, use actionMap.get(action)
     private void noop(Bug bug) {
-        // do nothing!
     }
     private void mov(Bug bug) {
         Point bugFrontCoords = bug.getDirection().goForward(bug.getCoords());
@@ -312,29 +307,29 @@ public class Battleground {
 
 
     public void loadCommands() {
-        commands.put(30, this::ifEnemy);
-        commands.put(31, this::ifAlly);
+//        commands.put(30, this::ifEnemy);
+//        commands.put(31, this::ifAlly);
         commands.put(32, this::ifFood);
         commands.put(33, this::ifEmpty);
         commands.put(34, this::ifWall);
         commands.put(35, this::_goto);
     }
 
-    public boolean ifEnemy(Entity frontEntity) {
-        if (frontEntity instanceof Bug) {
-            Bug enemyBug = (Bug) frontEntity;
-            return enemyBug.getSwarm() != this.swarm;
-        }
-        return false;
-    }
-
-    public boolean ifAlly(Entity frontEntity) {
-        if (frontEntity instanceof Bug) {
-            Bug allyBug = (Bug) frontEntity;
-            return allyBug.getSwarm() == swarm;
-        }
-        return false;
-    }
+//    public boolean ifEnemy(Entity frontEntity) {
+//        if (frontEntity instanceof Bug) {
+//            Bug enemyBug = (Bug) frontEntity;
+//            return enemyBug.getSwarm() != this.swarm;
+//        }
+//        return false;
+//    }
+//
+//    public boolean ifAlly(Entity frontEntity) {
+//        if (frontEntity instanceof Bug) {
+//            Bug allyBug = (Bug) frontEntity;
+//            return allyBug.getSwarm() == this.swarm;
+//        }
+//        return false;
+//    }
 
     public boolean ifFood(Entity frontEntity) {
         return frontEntity instanceof Food;
@@ -358,10 +353,10 @@ public class Battleground {
         } else if (frontEntity instanceof Wall) {
             // Do not move if the location contains a wall
             return false;
-        } else if (frontEntity instanceof Bug) {
-            // Move to the location if it contains an enemy bug
-            Bug enemyBug = (Bug) frontEntity;
-            return enemyBug.getSwarm() != swarm;
+//        } else if (frontEntity instanceof Bug) {
+//            // Move to the location if it contains an enemy bug
+//            Bug enemyBug = (Bug) frontEntity;
+//            return enemyBug.getSwarm() != swarm;
         } else {
             // Move to the location by default if no specific condition is met
             return true;

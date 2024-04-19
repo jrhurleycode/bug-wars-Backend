@@ -8,19 +8,19 @@ import java.util.List;
 
 @Data
 public class Swarm implements Entity {
-    private final List<Bug> bugs = new ArrayList<>();
+    private final List<Bug> bugs;
     private String name;
-
     public Swarm(String name) {
         this.name = name;
+        this.bugs = new ArrayList<>();
     }
 
-    private void addBug(Bug bug) {
+    public void addBug(Bug bug) {
         bugs.add(bug);
     }
 
-    public Bug getBug(int index) {
-        return bugs.get(index);
+    public void removeBug(Bug bug) {
+        bugs.remove(bug);
     }
 
     @Override
@@ -31,6 +31,11 @@ public class Swarm implements Entity {
     @Override
     public Point getPosition() {
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return name; // Return the name of the swarm
     }
 }
 
