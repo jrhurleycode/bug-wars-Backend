@@ -30,8 +30,6 @@ public class BattlegroundFactory {
             int mapHeight = Integer.parseInt(mapInfo[1]);
             //String mapName = mapInfo[2];
 
-            //System.out.println("Map Name: " + mapName);
-
             // Initialize the grid based on map size
             Entity[][] grid = new Entity[mapHeight][mapWidth];
 

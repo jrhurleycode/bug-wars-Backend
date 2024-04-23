@@ -15,14 +15,6 @@ public class Swarm implements Entity {
         this.bugs = new ArrayList<>();
     }
 
-    public void addBug(Bug bug) {
-        bugs.add(bug);
-    }
-
-    public void removeBug(Bug bug) {
-        bugs.remove(bug);
-    }
-
     @Override
     public void setPosition(Point position) {
         //implement logic
