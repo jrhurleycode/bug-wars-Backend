@@ -127,7 +127,7 @@ public class Bug implements Entity {
             bugTypeString = "^";
         } else if (swarm.getName().equals("1")) {
             color = "\033[0;31m"; // red
-            bugTypeString = "v";
+            bugTypeString = "^";
         } else {
             throw new IllegalStateException("Unexpected value: " + swarm);
         }

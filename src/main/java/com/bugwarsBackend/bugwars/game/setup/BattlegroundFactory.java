@@ -83,7 +83,7 @@ public class BattlegroundFactory {
             for (int j = 0; j < battleground.getGrid()[i].length; j++) {
                 System.out.print(battleground.getGrid()[i][j] + " ");
             }
-            System.out.println();
+            //System.out.println();
         }
         return battleground;
     }

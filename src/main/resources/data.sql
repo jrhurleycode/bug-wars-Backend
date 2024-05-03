@@ -29,6 +29,6 @@ VALUES
     '{10, 14, 14, 12, 10, 10, 11, 10, 14, 10}',
     true, '1'),
     ((SELECT id FROM users WHERE username = 'test'), 'test script',
-        'mov mov mov mov mov mov',
-        '{10, 10, 10, 10, 10}',
+        'mov mov rotl rotl mov mov',
+        '{10, 10, 14, 14, 10}',
         true, '1');

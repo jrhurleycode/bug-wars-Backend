@@ -36,7 +36,7 @@ public class Battleground {
 
         init();
         loadCommands();
-        updateGrid();
+        //updateGrid();
     }
 
 
@@ -133,20 +133,64 @@ public class Battleground {
     private void noop(Bug bug) {
     }
     // keep moving until you find an entity
+//    private void mov(Bug bug) {
+//        Point bugFrontCoords = bug.getDirection().goForward(bug.getCoords());
+//        Entity destination = getEntityAtCoords(bugFrontCoords);
+//
+////        if (destination != null) return;
+//        if (destination instanceof Wall) {
+//            rotr(bug); // Turn left
+//        }
+//        if (destination instanceof Food && bug.getUserBytecode()[bug.getIndex()] == 14) {
+//            eat(bug); // Eat if the next command is eat
+//        }
+//        if (destination instanceof Bug targetBug) {
+//            if (targetBug.getSwarm() != bug.getSwarm() && bug.getUserBytecode()[bug.getIndex()] == 13) {
+//                att(bug); // Attack if the next command is att and the target is an enemy bug
+//            }
+//        }
+//
+//        if (destination != null) {
+//            grid[bugFrontCoords.y][bugFrontCoords.x] = bug;
+//            grid[bug.getCoords().y][bug.getCoords().x] = null;
+//            bug.setCoords(bugFrontCoords);
+//            bug.setMoved(true); // Set moved flag to true regardless of movement success
+//        }
+//
+//
+//        grid[bugFrontCoords.y][bugFrontCoords.x] = bug;
+//        grid[bug.getCoords().y][bug.getCoords().x] = null;
+//        bug.setCoords(bugFrontCoords);
+//
+//        // if there's a wall, then rotr and rotl
+//        // if there's nothing, keep going
+//        // if there is an entity, then do go to movement
+//        bug.setMoved(true); // Set moved flag to true regardless of movement success
+//    }
+
     private void mov(Bug bug) {
         Point bugFrontCoords = bug.getDirection().goForward(bug.getCoords());
         Entity destination = getEntityAtCoords(bugFrontCoords);
+        System.out.println("current bug direction: " + bug.getDirection().toString());
+        if (destination instanceof Wall) {
+            bug.setDirection(bug.getDirection().turnRight());
+            System.out.println("New bug direction: " + bug.getDirection().toString());
+        }
+        if (destination instanceof Food && bug.getUserBytecode()[bug.getIndex()] == 14) {
+            eat(bug); // Eat if the next command is eat
+        }
+        if (destination instanceof Bug targetBug) {
+            if (targetBug.getSwarm() != bug.getSwarm() && bug.getUserBytecode()[bug.getIndex()] == 13) {
+                att(bug); // Attack if the next command is att and the target is an enemy bug
+            }
+        }
 
-//        if (destination != null) return;
-
-        grid[bugFrontCoords.y][bugFrontCoords.x] = bug;
-        grid[bug.getCoords().y][bug.getCoords().x] = null;
-        bug.setCoords(bugFrontCoords);
-
-        // if there's a wall, then rotr and rotl
-        // if there's nothing, keep going
-        // if there is an entity, then do go to movement
-        bug.setMoved(true); // Set moved flag to true regardless of movement success
+        if (destination != null) {
+            grid[bugFrontCoords.y][bugFrontCoords.x] = bug;
+            grid[bug.getCoords().y][bug.getCoords().x] = null;
+            bug.setCoords(bugFrontCoords);
+            bug.setMoved(true); // Set moved flag to true regardless of movement success
+        }
     }
 
     private void rotr(Bug bug) {
