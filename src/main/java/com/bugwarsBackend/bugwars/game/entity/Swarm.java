@@ -17,9 +17,7 @@ public class Swarm implements Entity {
 
     @Override
     public void setPosition(Point position) {
-        //implement logic
     }
-
     @Override
     public Point getPosition() {
         return null;

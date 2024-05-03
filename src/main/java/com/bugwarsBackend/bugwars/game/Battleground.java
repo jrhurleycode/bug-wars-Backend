@@ -53,7 +53,6 @@ public class Battleground {
         }
     }
 
-
     public TickSummary nextTick(Script script) {
         int[] bytecode = Arrays.copyOf(script.getBytecode(), script.getBytecode().length);
 
@@ -64,8 +63,6 @@ public class Battleground {
         for (int action : bytecode) {
             for (Bug bug : turnOrder) {
                 Point bugFrontCoords = bug.getDirection().goForward(bug.getCoords());
-                //System.out.println("Bug front coords: " + bugFrontCoords);
-                //System.out.println("Current action: " + action);
 
                 if (action >= 30 && action <= 35) {
                     switch (action) {
@@ -91,17 +88,16 @@ public class Battleground {
                             throw new RuntimeException("Invalid command: " + action);
                     }
                     commands.get(action).execute(bug);
-                } else if(actions.containsKey(action)) {
+                } else if (actions.containsKey(action)) {
                     actionsTaken.add(new ActionSummary(bug.getCoords(), action));
+                    print();
                     actions.get(action).run(bug);
                 } else {
                     throw new RuntimeException("Invalid command: " + action);
                 }
+                updateGrid();
             }
-            updateGrid();
         }
-        print();
-
         return new TickSummary(actionsTaken, lastSwarmStanding());
     }
 
@@ -111,24 +107,18 @@ public class Battleground {
                 if (grid[i][j] instanceof Bug bug) {
                     Point newCoords = bug.getCoords();
                     if (newCoords == null) {
-                        // Initialize bug coordinates if they are null
                         bug.setCoords(new Point(i, j));
-                        System.out.println("Bug detected: " + bug);
-                        System.out.println("Initializing coordinates: " + newCoords);
                         bug.setDirection(Direction.NORTH);
                         newCoords = bug.getCoords();
                     } else {
-                        // Clear the old position of the bug in the grid
                         grid[i][j] = null;
                     }
-                    System.out.println("New Coords for bug " + bug + ": " + newCoords);
-                    grid[newCoords.y][newCoords.x] = bug; // Corrected coordinates assignment
+                    grid[newCoords.y][newCoords.x] = bug;
                 } else if (grid[i][j] instanceof Food || grid[i][j] instanceof Wall || grid[i][j] instanceof EmptySpace) {
                 }
             }
         }
     }
-
 
 
     private void init() {
@@ -142,30 +132,26 @@ public class Battleground {
 
     private void noop(Bug bug) {
     }
+    // keep moving until you find an entity
     private void mov(Bug bug) {
         Point bugFrontCoords = bug.getDirection().goForward(bug.getCoords());
         Entity destination = getEntityAtCoords(bugFrontCoords);
 
-        //if (destination != null) return;
+//        if (destination != null) return;
 
         grid[bugFrontCoords.y][bugFrontCoords.x] = bug;
         grid[bug.getCoords().y][bug.getCoords().x] = null;
         bug.setCoords(bugFrontCoords);
 
+        // if there's a wall, then rotr and rotl
+        // if there's nothing, keep going
+        // if there is an entity, then do go to movement
         bug.setMoved(true); // Set moved flag to true regardless of movement success
     }
 
-
     private void rotr(Bug bug) {
-        // Before rotation
-        //System.out.println("Before rotr: " + bug.getDirection());
-
-        // Perform rotation
         Direction newDirection = bug.getDirection().turnRight();
         bug.setDirection(newDirection);
-
-        // After rotation
-        //System.out.println("After rotr: " + bug.getDirection());
     }
 
     private void rotl(Bug bug) {

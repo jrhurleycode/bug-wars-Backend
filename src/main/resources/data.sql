@@ -14,22 +14,21 @@ VALUES
     ((SELECT id FROM users WHERE username = 'test'), (SELECT id FROM roles WHERE name = 'ROLE_USER'))
 ON CONFLICT (user_id, role_id) DO NOTHING;
 
-INSERT INTO scripts (user_id, name, raw, bytecode, is_bytecode_valid)
+INSERT INTO scripts (user_id, name, raw, bytecode, is_bytecode_valid, swarm)
 VALUES
     ((SELECT id FROM users WHERE username = 'spider_bug'), 'Web Weaver',
     'mov eat eat  rotl :ifWall mov mov :ifAlly rotr mov :goto eat mov',
     '{10, 14, 14, 12, 4, 10, 6, 10, 8, 10}',
-    true),
+    true, '0'),
     ((SELECT id FROM users WHERE username = 'spider_bug'), 'Venom Strike',
     'ifEmpty mov noop _goto noop rotl _goto',
     '{33, 10, 0, 35, 0, 12, 35, 0}',
-    true),
+    true, '0'),
     ((SELECT id FROM users WHERE username = 'test'), 'Spider Strike',
     'mov eat eat  rotl mov mov rotr mov eat mov',
     '{10, 14, 14, 12, 10, 10, 11, 10, 14, 10}',
-    true),
+    true, '1'),
     ((SELECT id FROM users WHERE username = 'test'), 'test script',
-        'att att mov mov rotr :ifEnemy mov rotr rotr',
-        '{13, 13, 10, 10, 11, 30, 10, 11, 11}',
-        true);
-
+        'mov mov mov mov mov mov',
+        '{10, 10, 10, 10, 10}',
+        true, '1');

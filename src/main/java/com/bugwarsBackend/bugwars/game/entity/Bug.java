@@ -19,7 +19,7 @@ public class Bug implements Entity {
     private Direction direction;
     private int[] userBytecode;
     private int index = 0;
-    //test
+
     private boolean moved = false;
     @Autowired
     ScriptService scriptService;
